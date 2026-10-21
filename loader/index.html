@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peakx SD</title>
+<style>
+body{margin:0;height:100vh;display:grid;place-items:center;text-align:center;font-family:Segoe UI,system-ui,sans-serif;color:#0b2a6b;background:linear-gradient(160deg,#fff,#eef5ff 55%,#dbe9ff)}
+h1{margin:0;font-size:56px;letter-spacing:-.04em}h1 i{font-style:normal;color:#1f6bff}
+p{color:#46659f}a{color:#1f6bff;font-weight:600}
+</style></head><body>
+<div><h1>Peakx <i>SD</i></h1><p id="m">Starting…</p><a id="a" hidden>Open directly</a></div>
+<script>
+// Este archivo NO se edita nunca: subelo a htmlhoster una sola vez y comparte ese link.
+// Solo cambia HOME si algun dia cambias el nombre de tu servicio en Render.
+var HOME="https://wss-peakx-sd-onrender-com-wisp.onrender.com";
+var tries=0,m=document.getElementById("m"),a=document.getElementById("a");
+function ask(){
+  tries++;var c=new AbortController(),to=setTimeout(function(){c.abort()},12000);
+  fetch(HOME+"/api/info",{signal:c.signal,cache:"no-store"}).then(function(r){return r.json()}).then(function(i){
+    clearTimeout(to);location.replace((i.appUrl||HOME)+"/");
+  }).catch(function(){
+    clearTimeout(to);
+    if(tries<6){m.textContent="Waking up the server… ("+tries+"/6)";setTimeout(ask,2500)}
+    else{m.textContent="The server didn't answer.";a.href=HOME;a.hidden=false}
+  });
+}
+ask();
+</script></body></html>
